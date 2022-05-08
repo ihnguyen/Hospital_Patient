@@ -71,7 +71,25 @@ j1 <- j1 %>%
 k1 <- k1 %>%
   dplyr::rename(OSHPD.ID = OSHPD.Facility.Number)
 # Combine dataframes to one
-dt <- do.call("rbind", list(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1))
+dt0 <- do.call("rbind", list(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1))
+# Summarise
+dt <- dt0 %>% group_by(OSHPD.ID,Type.Of.Control,Facility.Name,Year,County.Name,variable,value) %>% 
+  summarise(Count = sum(Count)) %>% na.omit()
+# 32,418 observations before na.omit
+# 29,378 observations after na.omit
+# Set as factor
+dt$variable <- as.factor(dt$variable)
+dt$value <- as.numeric(dt$value)
+dt$County.Name <- as.factor(dt$County.Name)
+dt$Type.Of.Control <- as.factor(dt$Type.Of.Control)
+dt$Facility.Name <- as.factor(dt$Facility.Name)
+# View data
+hist(dt$value)
+hist(dt$Year)
+plot(dt$Type.Of.Control)
+plot(dt$County.Name)
+plot(dt$variable)
+ggplot(dt, aes(Count,variable)) + geom_boxplot()
 # #Transform Data (Attempt 1)
 # a <- a %>% 
 #   dcast(Oshpd_ID~Admission_Source_Site)
@@ -119,18 +137,13 @@ dim(dt)
 # 253,563 observations 8 variables before omitting n/a's
 # 243,811 observations 8 variables after omitting n/a's
 # 96.15% retained
-dt$variable <- as.factor(dt$variable)
-dt$value <- as.factor(dt$value)
-dt$County.Name <- as.factor(dt$County.Name)
-dt$Type.Of.Control <- as.factor(dt$Type.Of.Control)
-dt$Facility.Name <- as.factor(dt$Facility.Name)
 # Plots
 dt <- data.frame(dt)
 stripchart(Count~value+variable, vertical=T,pch=1,data=dt)
-
-
-
-
+# Santa Clara County
+sc <- subset(dt, County.Name == "SANTA CLARA")
+dim(sc)
+ggplot(sc,aes(Count,value)) + geom_boxplot()
 
 
 
