@@ -70,6 +70,18 @@ j1 <- j1 %>%
   dplyr::rename(OSHPD.ID = OSHPD.Facility.Number)
 k1 <- k1 %>%
   dplyr::rename(OSHPD.ID = OSHPD.Facility.Number)
+# View Data
+ggplot(a1,aes(Count,value)) + geom_boxplot() # Home
+ggplot(b1,aes(Count,value)) + geom_boxplot() # Unscheduled
+ggplot(c1,aes(Count,value)) + geom_boxplot() # Under 1, then 80+
+ggplot(d1,aes(Count,value)) + geom_boxplot() # Routine (Home)
+ggplot(e1,aes(Count,value)) + geom_boxplot() # Private, Medicare, and Medi-Cal
+ggplot(f1,aes(Count,value)) + geom_boxplot() # Female
+ggplot(g1,aes(Count,value)) + geom_boxplot() # Misadventures/Complications, Adverse Effects of Drugs, then Accidental Falls
+ggplot(h1,aes(Count,value)) + geom_boxplot() # All Pregnancies, Births, Circulatory, Digestive, then Respiratory
+ggplot(i1,aes(Count,value)) + geom_boxplot() # OB Procedures, Diagnostic/Therapeutic
+ggplot(j1,aes(Count,value)) + geom_boxplot() # White, Hispanic
+ggplot(k1,aes(Count,value)) + geom_boxplot() # Acute
 # Combine dataframes to one
 dt0 <- do.call("rbind", list(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1))
 # Summarise
